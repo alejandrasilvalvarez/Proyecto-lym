@@ -10,6 +10,9 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.*;
 
 import uniandes.lym.robot.control.*;
@@ -64,6 +67,12 @@ public class Console extends JPanel  {
 	* Boton para Salir
 	*/
 	static private JButton salir = new JButton("EXIT");
+	
+	
+	/**
+	* Boton para Cargar
+	*/
+	static private JButton cargar = new JButton("UPLOAD FILE");
 
 	/** 
 	* ScrollPanes para que  el log y la entrada se pueda mostrar con ScrollBars
@@ -131,8 +140,9 @@ public class Console extends JPanel  {
         c.fill = GridBagConstraints.HORIZONTAL;
         gridBag.setConstraints(scrollPaneOrden,c);
         add(scrollPaneOrden);
-        add(enviar);
+        add(enviar);        
      	add(salir);
+     	add(cargar);
      	
      	
    }
@@ -185,7 +195,36 @@ public static void relaunch(int dim){
 						System.exit(0);
 					}
 			 });
-			 
+		
+		cargar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JFileChooser fileChooser = new JFileChooser();
+		        int ret = fileChooser.showOpenDialog(fileChooser);
+		        if(ret== JFileChooser.APPROVE_OPTION)
+		        {
+		            File f= fileChooser.getSelectedFile();
+		            try
+		            {
+		                FileReader r =new FileReader(f);
+		                BufferedReader br = new BufferedReader(r);
+		                String line;
+		                interpreter.funcionaElCodigo( br, f);
+		                
+		            }
+		            catch (Exception e1) {
+						// TODO: handle exception
+					}
+		            
+		        }
+				
+			}
+			
+		});
+		
+		
 		enviar.addActionListener(new ActionListener() {
 		
 			public void actionPerformed(ActionEvent e) {
